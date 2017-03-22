@@ -31,3 +31,5 @@ model = tflearn.DNN(network, tensorboard_verbose=0)
 model.fit({'input': X}, {'target': Y}, n_epoch=8,
            validation_set=({'input': testX}, {'target': testY}),
            snapshot_step=100, show_metric=True, run_id='convnet_mnist')
+
+model.save('hw4.tflearn')
