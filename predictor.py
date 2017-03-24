@@ -5,12 +5,14 @@ from tflearn.layers.core import input_data, dropout, fully_connected
 from tflearn.layers.conv import conv_2d, max_pool_2d
 from tflearn.layers.normalization import local_response_normalization
 from tflearn.layers.estimator import regression
-
-# Data loading and preprocessing
-import tflearn.datasets.mnist as mnist
-X, Y, testX, testY = mnist.load_data(one_hot=True)
-X = X.reshape([-1, 28, 28, 1])
-testX = testX.reshape([-1, 28, 28, 1])
+import sys
+import glob
+import skimage.transform
+import skimage.io
+import tensorflow as tf
+import ntpath
+from skimage.color import rgb2grey
+import numpy as np
 
 # Building convolutional network
 network = input_data(shape=[None, 28, 28, 1], name='input')
@@ -30,4 +32,22 @@ network = regression(network, optimizer='adam', learning_rate=1e-4,
 model = tflearn.DNN(network, tensorboard_verbose=0)
 
 model.load('hw4_20.tflearn')
-print(model.predict(testX[0:100]))
+
+sess = tf.Session()
+
+if(len(sys.argv)>1):
+    folder_name = sys.argv[1]
+    all_pics = glob.glob("./"+folder_name+"/*")
+    images = skimage.io.imread_collection(all_pics)
+    i=0
+    for image in images:
+        # image = rgb2grey(image)
+        image = 255 - image
+        image = skimage.transform.resize(image,(28,28))
+        # skimage.io.imsave("./output/"+ntpath.basename(all_pics[i])+"_output.png",arr=image)
+        image = image.reshape([-1, 28, 28, 1])
+        print(ntpath.basename(all_pics[i]),"\t",tf.argmax(model.predict(image),1).eval(session=sess)[0])
+        i+=1
+else:
+    print("Please specify a folder name .. exiting")
+    quit()
