@@ -40,14 +40,17 @@ if(len(sys.argv)>1):
     all_pics = glob.glob("./"+folder_name+"/*")
     images = skimage.io.imread_collection(all_pics)
     i=0
+    output_file = open("prediction.txt", "w")
     for image in images:
-        # image = rgb2grey(image)
-        image = 255 - image
+        # image = rgb2grey(image) # cast rgb to grayscale
+        # image = 255 - image # invert color
         image = skimage.transform.resize(image,(28,28))
-        # skimage.io.imsave("./output/"+ntpath.basename(all_pics[i])+"_output.png",arr=image)
+        # skimage.io.imsave("./output/"+ntpath.basename(all_pics[i])+"_output.png",arr=image) # save resized images to visualize them
         image = image.reshape([-1, 28, 28, 1])
-        print(ntpath.basename(all_pics[i]),"\t",tf.argmax(model.predict(image),1).eval(session=sess)[0])
+        #print(ntpath.basename(all_pics[i]),"\t",tf.argmax(model.predict(image),1).eval(session=sess)[0]) # test print
+        output_file.write("%s\t%i\n" % (ntpath.basename(all_pics[i]),tf.argmax(model.predict(image),1).eval(session=sess)[0]))
         i+=1
+    output_file.close()
 else:
     print("Please specify a folder name .. exiting")
     quit()
