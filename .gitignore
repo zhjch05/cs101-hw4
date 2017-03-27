@@ -90,3 +90,7 @@ flycheck_*.el
 
 # directory configuration
 .dir-locals.el
+
+#npz image data
+*.npz
+alignmnist500.npz
