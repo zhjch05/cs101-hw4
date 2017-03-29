@@ -57,8 +57,8 @@ model.add(BatchNormalization())
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.25))
 model.add(Flatten())
-model.add(Dense(1024, activation='relu'))
-model.add(Dropout(0.5))
+model.add(Dense(2048, activation='relu'))
+model.add(Dropout(1.0))
 model.add(Dense(num_classes, activation='softmax'))
 
 model.compile(loss=keras.losses.categorical_crossentropy,
@@ -73,9 +73,9 @@ model.fit(x_train, y_train,
 score = model.evaluate(x_test, y_test, verbose=0)
 # serialize model to JSON
 model_json = model.to_json()
-with open("model_2.json", "w") as json_file:
+with open("model_6.json", "w") as json_file:
     json_file.write(model_json)
 # serialize weights to HDF5
-model.save_weights("model_2.h5")
+model.save_weights("model_6.h5")
 print('Test loss:', score[0])
 print('Test accuracy:', score[1])
