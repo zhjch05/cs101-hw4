@@ -46,12 +46,13 @@ y_train = keras.utils.to_categorical(y_train, num_classes)
 y_test = keras.utils.to_categorical(y_test, num_classes)
 
 model = Sequential()
-model.add(Conv2D(32, kernel_size=(5, 5),
+model.add(Conv2D(32, kernel_size=(3, 3),
                  activation='relu',
                  input_shape=input_shape))
+model.add(Conv2D(64, (3, 3), activation='relu'))
 model.add(BatchNormalization())
 model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Conv2D(64, kernel_size=(5, 5),
+model.add(Conv2D(128, kernel_size=(5, 5),
                  activation='relu'))
 model.add(BatchNormalization())
 model.add(MaxPooling2D(pool_size=(2, 2)))
@@ -73,9 +74,9 @@ model.fit(x_train, y_train,
 score = model.evaluate(x_test, y_test, verbose=0)
 # serialize model to JSON
 model_json = model.to_json()
-with open("model_4.json", "w") as json_file:
+with open("model_x.json", "w") as json_file:
     json_file.write(model_json)
 # serialize weights to HDF5
-model.save_weights("model_4.h5")
+model.save_weights("model_x.h5")
 print('Test loss:', score[0])
 print('Test accuracy:', score[1])

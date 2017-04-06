@@ -70,12 +70,12 @@ def aug_signal(image, rate):
 sess = tf.Session()
 
 # load json and create model
-json_file = open('model.json', 'r')
+json_file = open('model_align2.json', 'r')
 loaded_model_json = json_file.read()
 json_file.close()
 loaded_model = model_from_json(loaded_model_json)
 # load weights into new model
-loaded_model.load_weights("model.h5")
+loaded_model.load_weights("model_align2.h5")
 print("Loaded model from disk")
 loaded_model.compile(loss=keras.losses.categorical_crossentropy,
               optimizer=keras.optimizers.Adadelta(),
