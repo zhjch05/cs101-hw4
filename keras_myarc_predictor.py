@@ -27,6 +27,7 @@ def add_padding(image):
         front = int(diff/2)
         rear = diff - front
         new_image = np.lib.pad(image, ((0, 0), (front, rear)), 'constant', constant_values=((0, 0),))
+        new_image = np.lib.pad(image, ((45, 45), (45, 45)), 'constant', constant_values=((0, 0), (0, 0)))
         return new_image
     elif image.shape[0] < image.shape[1]:
         l_edge = image.shape[1]
@@ -34,8 +35,10 @@ def add_padding(image):
         front = int(diff / 2)
         rear = diff - front
         new_image = np.lib.pad(image, ((front, rear), (0, 0)), 'constant', constant_values=((0, 0),))
+        new_image = np.lib.pad(image, ((45, 45), (45, 45)), 'constant', constant_values=((0, 0), (0, 0)))
         return new_image
     else:
+        new_image = np.lib.pad(image, ((45, 45), (45, 45)), 'constant', constant_values=((0, 0), (0, 0)))
         return image
 wst = 0.05
 rate = 5.0
