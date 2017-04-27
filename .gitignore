@@ -94,3 +94,6 @@ flycheck_*.el
 #npz image data
 *.npz
 alignmnist500.npz
+
+#term project dataset
+termproject/dataset/*

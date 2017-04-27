@@ -8,7 +8,7 @@
 #### Classifier with following symbols:
   - Digits: 0-9
   - Characters: x, y, a, b, c, d, m, n, p, delta, f, h, k, sin, cos, tan, A, pi
-  - Operators: +, -, \*, /, =, sqrt, ^, \_, bar, frac, cdots
+  - Operators: +, -, \*, /, =, sqrt, ^, \_, bar, frac, cdots, (, )
   - Architecture: ResNet-50
 
 #### Segmentation
