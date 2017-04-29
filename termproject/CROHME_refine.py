@@ -25,7 +25,7 @@ def format(img):
 
 	#dilate
 	kernel = np.ones((3,3),np.uint8)
-	img = cv2.dilate(img,kernel,iterations = 1)
+	img = cv2.dilate(img,kernel,iterations = 2)
 
 	img = cv2.GaussianBlur(img, (5, 5), 0)
 	ret, img = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
@@ -43,6 +43,8 @@ for label in categories:
 	i = 0
 	l = len(c_pics)
 	for pic in c_pics:
+		if i > 5000:
+			break
 		if pic.endswith('.png') or pic.endswith('.jpg'):
 
 			#read in
@@ -58,10 +60,10 @@ for label in categories:
 			x = np.append(x, img.flatten())
 			y = np.append(y, label)
 
-			p = i/l * 100
+			p = i*100.0/min(l, 5000)
 			sys.stdout.write("\r%d%%" % p)
 			sys.stdout.flush()
-			i+=1.0
+			i+=1
 			t+=1
 	print("%s done." % label)
 
