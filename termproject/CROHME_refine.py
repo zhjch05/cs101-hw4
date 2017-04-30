@@ -14,10 +14,11 @@ categories = ['Delta','pi','+','-', '=', 'div','times','sqrt','(',')']
 path = './dataset/extracted_images/'
 
 def format(img):
-	#padding to 90 * 90
-	padding = 90 - img.shape[0]
-	img = np.lib.pad(img, ((padding, padding),
-		(padding, padding)), 'constant',
+	#padding to 128 * 128, originally 45*45
+	padding_top = 41
+	padding_left = 42
+	img = np.lib.pad(img, ((padding_top, padding_left),
+		(padding_top, padding_left)), 'constant',
 		constant_values=((255, 255), (255, 255)))
 
 	#threshold and invert color
@@ -51,6 +52,9 @@ for label in categories:
 			img = cv2.imread(pic, 0)
 
 			img = format(img)
+			print(img.flatten().shape)
+			print(img.flatten())
+			quit()
 
 			#write for debug
 			# cv2.imwrite('./output/' + str(t) + '.png', img)
