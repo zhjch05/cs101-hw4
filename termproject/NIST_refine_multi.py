@@ -2,6 +2,11 @@ import numpy as np
 import cv2
 import glob
 import sys
+import skimage.io
+from multiprocessing import Process, Array
+
+imgs = {}
+n_imgs = {}
 
 #class names to extract
 categories = ['0','1','2','3','4','5','6','7','8','9',
@@ -39,40 +44,33 @@ def format(img):
 	ret, img = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY_INV)
 	return img
 
-def readin(c_pics):
-	global x, y
+def readin(imgs, label, x, y):
+	global n_imgs
+	x = np.empty((0))
+	y = np.empty((0))
 	i = 0
-	l = len(c_pics)
-	t = min(l, 2000)
-	for pic in c_pics:
-		if i > 2000:
+	pics = imgs[label]
+	for img in pics:
+		if i > 10:
 			break
-		if pic.endswith('.png') or pic.endswith('.jpg'):
 
-			#read in
-			img = cv2.imread(pic, 0)
+		# img = format(img)
 
-			# img = format(img)
+		#write for debug
+		# cv2.imwrite('./output/' + str(t) + '.png', img)
 
-			#write for debug
-			# cv2.imwrite('./output/' + str(t) + '.png', img)
+		img = img/255
 
-			img = img/255
-
-			x = np.append(x, img.flatten())
-			y = np.append(y, label)
-
-			p = i*100.0/t
-			sys.stdout.write("\r%d%%" % p)
-			sys.stdout.flush()
-			i+=1
+		x = np.append(x, img.flatten())
+		y = np.append(y, label)
+		print(i, label)
+		i+=1
 	print("%s done." % label)
 
 #dataset path
 path = './dataset/by_class/'
 
-x = np.empty((0))
-y = np.empty((0))
+#read in all pics to mem at one time
 
 for label in categories:
 	c_path = path + c_map[label] + '/train_' + c_map[label] + '/'
@@ -81,8 +79,19 @@ for label in categories:
 	#samples size for debug
 	print(label, len(c_pics))
 
-	readin(c_pics)
+	imgs[label] = skimage.io.imread_collection(c_pics)
+
+for label in imgs:
+	# readin(imgs, label)
+	shared_x = Array('x', [])
+	shared_y = Array('y', [])
+	p = Process(target=readin, args=(imgs, label, shared_x, shared_y))
+	p.start()
+	p.join()
+
+
+
 	
 
 #save to file
-np.savez_compressed('nist_refined.npz', x = x, y = y)
+# np.savez_compressed('nist_refined.npz', x = x, y = y)
