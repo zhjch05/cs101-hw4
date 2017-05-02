@@ -6,12 +6,18 @@ from keras.layers import Conv2D, MaxPooling2D
 from keras.layers.normalization import BatchNormalization
 from keras import backend as K
 import numpy as np
+from sklearn import preprocessing
+
 alignmnist = np.load('final32.npz')
 x = alignmnist['x']
 y = alignmnist['y']
 
+le = preprocessing.LabelEncoder()
+le.fit(y)
+t_y = le.transform(y)
+
 batch_size = 128
-num_classes = 33
+num_classes = len(le.classes_)
 epochs = 12
 
 # input image dimensions
@@ -30,7 +36,7 @@ print('x shape:', x.shape)
 print(x.shape[0], 'train samples')
 
 # convert class vectors to binary class matrices
-y = keras.utils.to_categorical(y, num_classes)
+y = keras.utils.to_categorical(t_y, num_classes)
 
 model = Sequential()
 model.add(Conv2D(32, kernel_size=(3, 3),
