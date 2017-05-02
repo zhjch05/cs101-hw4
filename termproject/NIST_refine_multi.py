@@ -6,7 +6,6 @@ import skimage.io
 from multiprocessing import Process, Array
 
 imgs = {}
-n_imgs = {}
 
 #class names to extract
 categories = ['0','1','2','3','4','5','6','7','8','9',
@@ -44,27 +43,25 @@ def format(img):
 	ret, img = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY_INV)
 	return img
 
-def readin(imgs, label, x, y):
-	global n_imgs
+def readin(imgs, label):
 	x = np.empty((0))
 	y = np.empty((0))
 	i = 0
 	pics = imgs[label]
 	for img in pics:
-		if i > 10:
+		if i > 5000:
 			break
-
-		# img = format(img)
 
 		#write for debug
 		# cv2.imwrite('./output/' + str(t) + '.png', img)
-
+		img = 255 - img
 		img = img/255
 
 		x = np.append(x, img.flatten())
 		y = np.append(y, label)
 		print(i, label)
 		i+=1
+	np.savez_compressed('./npzs/'+label+'.npz', x = x, y = y)
 	print("%s done." % label)
 
 #dataset path
@@ -81,15 +78,11 @@ for label in categories:
 
 	imgs[label] = skimage.io.imread_collection(c_pics)
 
+
 for label in imgs:
 	# readin(imgs, label)
-	shared_x = Array('x', [])
-	shared_y = Array('y', [])
-	p = Process(target=readin, args=(imgs, label, shared_x, shared_y))
+	p = Process(target=readin, args=(imgs, label))
 	p.start()
-	p.join()
-
-
 
 	
 
