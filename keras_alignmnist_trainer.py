@@ -23,7 +23,6 @@ if K.image_data_format() == 'channels_first':
     input_shape = (1, img_rows, img_cols)
 else:
     x = x.reshape(x.shape[0], img_rows, img_cols, 1)
-    x = x.reshape(x.shape[0], img_rows, img_cols, 1)
     input_shape = (img_rows, img_cols, 1)
 
 x = x.astype('float32')
