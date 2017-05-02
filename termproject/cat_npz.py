@@ -1,10 +1,12 @@
 import numpy as np
 import glob
 import sys
+import os
 gx = np.empty((0))
 gy = np.empty((0))
-path = './npzs/*'
-npzs = glob.glob(path)
+path = os.path.join(os.getcwd(), 'dataset','npz')
+print(path)
+npzs = glob.glob(path + '\\*')
 for npz in npzs:
 	print(npz)
 	n = np.load(npz)
