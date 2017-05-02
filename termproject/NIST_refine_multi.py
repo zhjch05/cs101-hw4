@@ -8,9 +8,11 @@ from multiprocessing import Process, Array
 imgs = {}
 
 #class names to extract
-categories = ['0','1','2','3','4','5','6','7','8','9',
-	'x','y','A','a','b','c','d',
-	'm','n','p','f','h','k']
+# categories = ['0','1','2','3','4','5','6','7','8','9',
+# 	'x','y','A','a','b','c','d',
+# 	'm','n','p','f','h','k']
+
+categories = ['a']
 
 c_map = {
 	'0':'30',
