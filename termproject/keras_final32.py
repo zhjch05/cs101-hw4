@@ -65,6 +65,7 @@ model.fit(x, y,
           batch_size=batch_size,
           epochs=epochs,
           verbose=1,
+          shuffle=True,
           validation_split=0.20)
 
 

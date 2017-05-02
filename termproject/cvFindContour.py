@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-im_gray = cv2.imread("test2.png", 0)
+im_gray = cv2.imread("test2out.png", 0)
 
 # Convert to grayscale and apply Gaussian filtering
 im_gray = cv2.GaussianBlur(im_gray, (5, 5), 0)
