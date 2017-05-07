@@ -61,12 +61,17 @@ model.compile(loss=keras.losses.categorical_crossentropy,
               optimizer=keras.optimizers.Adadelta(),
               metrics=['accuracy'])
 
-model.fit(x, y,
-          batch_size=batch_size,
-          epochs=epochs,
-          verbose=1,
-          shuffle=True)
-
 
 # serialize weights to HDF5
-model.save_weights("model_final32_f.h5")
+model.load_weights("model_final32_1.h5")
+
+train32 = np.load('train32_raw.npz')
+x = train32['x']
+y = train32['y']
+x = x.reshape(y.shape[0], 32, 32, 1)
+
+i = 0
+for img in x:
+  label = y[i]
+  print(le.inverse_transform(np.argmax(model.predict(img))), label)
+  i+=1
